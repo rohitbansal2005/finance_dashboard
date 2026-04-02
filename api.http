@@ -1,0 +1,91 @@
+@baseUrl = http://localhost:5000/api
+# Yahan apna token paste karna login karne ke baad
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2UyZTc3Y2FhMjY3NWIwYmQ4ZjU3MyIsImlhdCI6MTc3NTExOTk5MiwiZXhwIjoxNzc3NzExOTkyfQ.cpqjsmZn7Rv65tSbIXJh71tPSZpnUKgcj5Twa8hF47Y
+### ========================================
+### 1. AUTHENTICATION (Bina token ke chalenge)
+### ========================================
+
+### 1A. Register New User
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "name": "rkbansal",
+    "email": "rohitbansal.dev@gmail.com",
+    "password": "rkb@2005",
+    "role": "Admin" 
+}
+
+###
+
+### 1B. Login User (Token copy karke upar @token me dalna)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "rohitbansal.dev@gmail.com",
+    "password": "rkb@2005"
+}
+
+###
+
+### 1C. Get Current Logged In User
+GET {{baseUrl}}/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2UyZTc3Y2FhMjY3NWIwYmQ4ZjU3MyIsImlhdCI6MTc3NTExOTk5MiwiZXhwIjoxNzc3NzExOTkyfQ.cpqjsmZn7Rv65tSbIXJh71tPSZpnUKgcj5Twa8hF47Y
+
+
+### ========================================
+### 2. FINANCIAL RECORDS
+### ========================================
+
+### 2A. Create a Record (Sirf Admin)
+POST {{baseUrl}}/records
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "amount": 50000,
+    "type": "Income",
+    "category": "Salary",
+    "description": "Monthly salary credited"
+}
+
+###
+
+### 2B. Get All Records (Admin & Analyst)
+GET {{baseUrl}}/records?page=1&limit=10
+Authorization: Bearer {{token}}
+
+###
+
+### 2C. Get Single Record by ID (ID change karna)
+@recordId = PASTE_RECORD_ID_HERE
+GET {{baseUrl}}/records/{{recordId}}
+Authorization: Bearer {{token}}
+
+###
+
+### 2D. Update a Record (Sirf Admin)
+PUT {{baseUrl}}/records/{{recordId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "amount": 55000,
+    "description": "Updated salary with bonus"
+}
+
+###
+
+### 2E. Delete a Record (Sirf Admin)
+DELETE {{baseUrl}}/records/{{recordId}}
+Authorization: Bearer {{token}}
+
+
+### ========================================
+### 3. DASHBOARD
+### ========================================
+
+### 3A. Get Dashboard Summary 
+GET {{baseUrl}}/dashboard/summary
+Authorization: Bearer {{token}}

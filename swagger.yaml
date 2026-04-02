@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: Finance Data Processing and Access Control API
+  description: Backend API for a finance dashboard system with role-based access control.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Local development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Record:
+      type: object
+      properties:
+        amount:
+          type: number
+        type:
+          type: string
+          enum: [Income, Expense]
+        category:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [Viewer, Analyst, Admin]
+security:
+  - bearerAuth: []
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User created successfully
+  /auth/login:
+    post:
+      summary: Login user
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+  /auth/me:
+    get:
+      summary: Get current authenticated user
+      tags: [Auth]
+      responses:
+        '200':
+          description: Returns user profile
+  /records:
+    get:
+      summary: Get all financial records
+      tags: [Records]
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of records
+    post:
+      summary: Create a new financial record
+      tags: [Records]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+      responses:
+        '201':
+          description: Record created
+  /records/{id}:
+    get:
+      summary: Get a record by ID
+      tags: [Records]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The record
+    put:
+      summary: Update a record
+      tags: [Records]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+      responses:
+        '200':
+          description: Record updated
+    delete:
+      summary: Delete a record
+      tags: [Records]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Record deleted
+  /dashboard/summary:
+    get:
+      summary: Get dashboard summary data
+      tags: [Dashboard]
+      responses:
+        '200':
+          description: Summary of income, expense and balance
