@@ -10,9 +10,9 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-    "name": "rkbansal",
-    "email": "rohitbansal.dev@gmail.com",
-    "password": "rkb@2005",
+    "name": " ",
+    "email": " ",
+    "password": " ",
     "role": "Admin" 
 }
 
@@ -23,8 +23,8 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "rohitbansal.dev@gmail.com",
-    "password": "rkb@2005"
+    "email": " ",
+    "password": " "
 }
 
 ###
