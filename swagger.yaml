@@ -4,8 +4,8 @@ info:
   description: Backend API for a finance dashboard system with role-based access control.
   version: 1.0.0
 servers:
-  - url: http://localhost:5000/api
-    description: Local development server
+  - url: /api
+    description: Current Environment API
 components:
   securitySchemes:
     bearerAuth:
